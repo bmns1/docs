@@ -6,58 +6,56 @@ const emailInput = document.getElementById('email-input');
 const submitButton = document.getElementById('submit-button');
 const resultContainer = document.getElementById('result-container');
 
-accessForm.addEventListener('submit', async (e) => {
+// This is the global function that the Google Script will call.
+// We attach it to the `window` object to make sure it's accessible.
+window.handleResponse = function(response) {
+    // This function runs after the server sends back its data.
+    if (response.error) {
+        resultContainer.innerHTML = `<p class="error">${response.error}</p>`;
+    } else if (response.docs) {
+        let docListHtml = '<h2>Available Documents</h2><ul>';
+        response.docs.forEach(doc => {
+            docListHtml += `<li><a href="${doc.link}" target="_blank">${doc.title}</a></li>`;
+        });
+        docListHtml += '</ul>';
+        resultContainer.innerHTML = docListHtml;
+    }
+
+    // Re-enable the button
+    submitButton.disabled = false;
+    submitButton.textContent = 'Get Documents';
+}
+
+accessForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
     submitButton.disabled = true;
     submitButton.textContent = 'Verifying...';
     resultContainer.innerHTML = '';
-    console.log("Attempting to fetch from backend...");
 
-    try {
-        const response = await fetch(WEB_APP_URL, {
-            method: 'POST',
-           // mode: 'cors',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ email: emailInput.value }),
-        });
-        
-        // DEBUG: Log the raw response from the server
-        console.log("Raw Server Response:", response);
-        
-        if (!response.ok) {
-            // DEBUG: If response is not OK (e.g., 404, 500), log the text
-            const errorText = await response.text();
-            console.error("Server responded with an error:", response.status, errorText);
-            throw new Error(`Server error: ${response.status}`);
-        }
+    // Create the full URL with parameters for the JSONP request.
+    const userEmail = emailInput.value;
+    const requestUrl = `${WEB_APP_URL}?callback=handleResponse&email=${encodeURIComponent(userEmail)}`;
 
-        const result = await response.json();
-        
-        // DEBUG: Log the parsed JSON result
-        console.log("Parsed JSON Result:", result);
+    // Remove any old script tag if it exists, to avoid conflicts.
+    const oldScript = document.getElementById('jsonp-script');
+    if (oldScript) {
+        oldScript.remove();
+    }
 
-        if (result.error) {
-            resultContainer.innerHTML = `<p class="error">${result.error}</p>`;
-        } else if (result.docs) {
-            let docListHtml = '<h2>Available Documents</h2><ul>';
-            result.docs.forEach(doc => {
-                docListHtml += `<li><a href="${doc.link}" target="_blank">${doc.title}</a></li>`;
-            });
-            docListHtml += '</ul>';
-            resultContainer.innerHTML = docListHtml;
-        } else {
-            resultContainer.innerHTML = `<p>An unexpected data format was received.</p>`;
-        }
-        
-    } catch (error) {
-        // DEBUG: Log the exact error that occurred during the fetch/parsing
-        console.error("Fetch failed:", error);
-        resultContainer.innerHTML = `<p class="error">An unexpected error occurred. Please try again later...</p>`;
-    } finally {
+    // This is the JSONP technique: create a <script> tag.
+    // The browser will execute the JavaScript returned by the server.
+    const script = document.createElement('script');
+    script.id = 'jsonp-script';
+    script.src = requestUrl;
+
+    // Add an error handler in case the script fails to load (e.g., network error)
+    script.onerror = function() {
+        resultContainer.innerHTML = `<p class="error">Failed to communicate with the server. Please check your network connection.</p>`;
         submitButton.disabled = false;
         submitButton.textContent = 'Get Documents';
-    }
+    };
+    
+    // Add the script to the page to trigger the request.
+    document.body.appendChild(script);
 });
