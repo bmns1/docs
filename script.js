@@ -1,89 +1,63 @@
 // Apps Script Web App URL
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzn4aCUHJ2DxFv5uKOSCoaIZnfXTv42Bzyk9C3BAD_MJoIGpXjo3wCN1PJhfZXUt8WieQ/exec';
-
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwqnTAdVlht0fbSngWpfGsxnd3C9_ngTYTlathpfqgedneiXjYvhIY-6Mj8anfN5yPrlA/exec';
 
 const accessForm = document.getElementById('access-form');
 const emailInput = document.getElementById('email-input');
 const submitButton = document.getElementById('submit-button');
 const resultContainer = document.getElementById('result-container');
-const captchaSlider = document.getElementById('captcha-slider');
-const captchaLabel = document.getElementById('captcha-label');
 
-// --- START OF NEW SLIDER LOGIC ---
-
-// Disable the submit button by default.
-submitButton.disabled = true;
-
-captchaSlider.addEventListener('input', () => {
-    // Check if the slider is at the very end.
-    if (parseInt(captchaSlider.value) === 100) {
-        submitButton.disabled = false;
-        captchaLabel.textContent = '✅ Verified!';
-        captchaLabel.style.color = '#28a745'; // Green color for success
-    } else {
-        // If the user slides back, disable the button again.
-        submitButton.disabled = true;
-        captchaLabel.textContent = 'Slide to enable submission';
-        captchaLabel.style.color = '#495057'; // Default color
-    }
-});
-
-// --- END OF NEW SLIDER LOGIC ---
-
-
-// This is the global function that the Google Script will call.
-window.handleResponse = function(response) {
-    if (response.error) {
-        resultContainer.innerHTML = `<p class="error">${response.error}</p>`;
-    } else if (response.docs) {
-        let docListHtml = '<h2>Available Documents</h2><ul>';
-        response.docs.forEach(doc => {
-            docListHtml += `<li><a href="${doc.link}" target="_blank">${doc.title}</a></li>`;
-        });
-        docListHtml += '</ul>';
-        resultContainer.innerHTML = docListHtml;
-    }
-
-    // --- MODIFICATION ---
-    // Reset the form state after getting a response.
-    submitButton.disabled = true;
-    submitButton.textContent = 'Get Documents';
-    captchaSlider.value = 0; // Reset slider
-    captchaLabel.textContent = 'Slide to enable submission';
-    captchaLabel.style.color = '#495057';
-}
-
-accessForm.addEventListener('submit', (e) => {
+accessForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    // The button is already enabled by the slider, so we just show the loading state.
     submitButton.disabled = true;
     submitButton.textContent = 'Verifying...';
     resultContainer.innerHTML = '';
+    console.log("Attempting to fetch from backend...");
 
-    const userEmail = emailInput.value;
-    const requestUrl = `${WEB_APP_URL}?callback=handleResponse&email=${encodeURIComponent(userEmail)}`;
+    try {
+        const response = await fetch(WEB_APP_URL, {
+            method: 'POST',
+           // mode: 'cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email: emailInput.value }),
+        });
+        
+        // DEBUG: Log the raw response from the server
+        console.log("Raw Server Response:", response);
+        
+        if (!response.ok) {
+            // DEBUG: If response is not OK (e.g., 404, 500), log the text
+            const errorText = await response.text();
+            console.error("Server responded with an error:", response.status, errorText);
+            throw new Error(`Server error: ${response.status}`);
+        }
 
-    const oldScript = document.getElementById('jsonp-script');
-    if (oldScript) {
-        oldScript.remove();
-    }
+        const result = await response.json();
+        
+        // DEBUG: Log the parsed JSON result
+        console.log("Parsed JSON Result:", result);
 
-    const script = document.createElement('script');
-    script.id = 'jsonp-script';
-    script.src = requestUrl;
-
-    script.onerror = function() {
-        resultContainer.innerHTML = `<p class="error">Failed to communicate with the server. Please check your network connection.</p>`;
-        // --- MODIFICATION ---
-        // Reset the form state on error.
-        submitButton.disabled = true;
+        if (result.error) {
+            resultContainer.innerHTML = `<p class="error">${result.error}</p>`;
+        } else if (result.docs) {
+            let docListHtml = '<h2>Available Documents</h2><ul>';
+            result.docs.forEach(doc => {
+                docListHtml += `<li><a href="${doc.link}" target="_blank">${doc.title}</a></li>`;
+            });
+            docListHtml += '</ul>';
+            resultContainer.innerHTML = docListHtml;
+        } else {
+            resultContainer.innerHTML = `<p>An unexpected data format was received.</p>`;
+        }
+        
+    } catch (error) {
+        // DEBUG: Log the exact error that occurred during the fetch/parsing
+        console.error("Fetch failed:", error);
+        resultContainer.innerHTML = `<p class="error">An unexpected error occurred. Please try again later...</p>`;
+    } finally {
+        submitButton.disabled = false;
         submitButton.textContent = 'Get Documents';
-        captchaSlider.value = 0;
-        captchaLabel.textContent = 'Slide to enable submission';
-        captchaLabel.style.color = '#495057';
-    };
-    
-    document.body.appendChild(script);
+    }
 });
-
