@@ -1,5 +1,5 @@
 // Apps Script Web App URL
-const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbx-TfYN4Kxh0D6bUZ8Vk94V0Jci9aGzrNlo9zYxgaB2lu-NEGEx__6I7iggtmvcY2f2YQ/exec';
+const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzn4aCUHJ2DxFv5uKOSCoaIZnfXTv42Bzyk9C3BAD_MJoIGpXjo3wCN1PJhfZXUt8WieQ/exec';
 
 const accessForm = document.getElementById('access-form');
 const emailInput = document.getElementById('email-input');
