@@ -17,7 +17,7 @@ accessForm.addEventListener('submit', async (e) => {
     try {
         const response = await fetch(WEB_APP_URL, {
             method: 'POST',
-            mode: 'cors',
+           // mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
             },
