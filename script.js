@@ -55,7 +55,7 @@ accessForm.addEventListener('submit', async (e) => {
     } catch (error) {
         // DEBUG: Log the exact error that occurred during the fetch/parsing
         console.error("Fetch failed:", error);
-        resultContainer.innerHTML = `<p class="error">An unexpected error occurred. Please check the browser console (F12) for details.</p>`;
+        resultContainer.innerHTML = `<p class="error">An unexpected error occurred. Please try again later.</p>`;
     } finally {
         submitButton.disabled = false;
         submitButton.textContent = 'Get Documents';
