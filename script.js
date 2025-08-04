@@ -1,15 +1,38 @@
 // Apps Script Web App URL
 const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbzn4aCUHJ2DxFv5uKOSCoaIZnfXTv42Bzyk9C3BAD_MJoIGpXjo3wCN1PJhfZXUt8WieQ/exec';
 
+
 const accessForm = document.getElementById('access-form');
 const emailInput = document.getElementById('email-input');
 const submitButton = document.getElementById('submit-button');
 const resultContainer = document.getElementById('result-container');
+const captchaSlider = document.getElementById('captcha-slider');
+const captchaLabel = document.getElementById('captcha-label');
+
+// --- START OF NEW SLIDER LOGIC ---
+
+// Disable the submit button by default.
+submitButton.disabled = true;
+
+captchaSlider.addEventListener('input', () => {
+    // Check if the slider is at the very end.
+    if (parseInt(captchaSlider.value) === 100) {
+        submitButton.disabled = false;
+        captchaLabel.textContent = '✅ Verified!';
+        captchaLabel.style.color = '#28a745'; // Green color for success
+    } else {
+        // If the user slides back, disable the button again.
+        submitButton.disabled = true;
+        captchaLabel.textContent = 'Slide to enable submission';
+        captchaLabel.style.color = '#495057'; // Default color
+    }
+});
+
+// --- END OF NEW SLIDER LOGIC ---
+
 
 // This is the global function that the Google Script will call.
-// We attach it to the `window` object to make sure it's accessible.
 window.handleResponse = function(response) {
-    // This function runs after the server sends back its data.
     if (response.error) {
         resultContainer.innerHTML = `<p class="error">${response.error}</p>`;
     } else if (response.docs) {
@@ -21,41 +44,46 @@ window.handleResponse = function(response) {
         resultContainer.innerHTML = docListHtml;
     }
 
-    // Re-enable the button
-    submitButton.disabled = false;
+    // --- MODIFICATION ---
+    // Reset the form state after getting a response.
+    submitButton.disabled = true;
     submitButton.textContent = 'Get Documents';
+    captchaSlider.value = 0; // Reset slider
+    captchaLabel.textContent = 'Slide to enable submission';
+    captchaLabel.style.color = '#495057';
 }
 
 accessForm.addEventListener('submit', (e) => {
     e.preventDefault();
     
+    // The button is already enabled by the slider, so we just show the loading state.
     submitButton.disabled = true;
     submitButton.textContent = 'Verifying...';
     resultContainer.innerHTML = '';
 
-    // Create the full URL with parameters for the JSONP request.
     const userEmail = emailInput.value;
     const requestUrl = `${WEB_APP_URL}?callback=handleResponse&email=${encodeURIComponent(userEmail)}`;
 
-    // Remove any old script tag if it exists, to avoid conflicts.
     const oldScript = document.getElementById('jsonp-script');
     if (oldScript) {
         oldScript.remove();
     }
 
-    // This is the JSONP technique: create a <script> tag.
-    // The browser will execute the JavaScript returned by the server.
     const script = document.createElement('script');
     script.id = 'jsonp-script';
     script.src = requestUrl;
 
-    // Add an error handler in case the script fails to load (e.g., network error)
     script.onerror = function() {
         resultContainer.innerHTML = `<p class="error">Failed to communicate with the server. Please check your network connection.</p>`;
-        submitButton.disabled = false;
+        // --- MODIFICATION ---
+        // Reset the form state on error.
+        submitButton.disabled = true;
         submitButton.textContent = 'Get Documents';
+        captchaSlider.value = 0;
+        captchaLabel.textContent = 'Slide to enable submission';
+        captchaLabel.style.color = '#495057';
     };
     
-    // Add the script to the page to trigger the request.
     document.body.appendChild(script);
 });
+
