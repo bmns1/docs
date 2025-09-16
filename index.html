@@ -21,16 +21,16 @@
             background-position: 0 0, 10px 10px;
         }
         .print-area {
-            display: none;
+            display: block; /* Ensure it's visible by default on the confirmation page */
         }
         @media print {
             body * {
                 visibility: hidden;
             }
-            .print-area, .print-area * {
+            #page-confirmation, #page-confirmation * {
                 visibility: visible;
             }
-            .print-area {
+            #page-confirmation {
                 position: absolute;
                 left: 0;
                 top: 0;
@@ -45,7 +45,7 @@
         <!-- Page 1: Landing Page -->
         <div id="page-landing">
             <div class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center">
-                <img src="https://www.themoviedb.org/t/p/w500/Akm3wSHdD0Yc53kZ32sS1O5dFvA.jpg" alt="Smurfs Movie Poster" class="w-48 mx-auto rounded-lg shadow-lg -mt-24 mb-6 border-4 border-white">
+                <img src="https://m.media-amazon.com/images/M/MV5BMTg1NjU5MTAxMl5BMl5BanBnXkFtZTcwMDI5OTc4Nw@@._V1_FMjpg_UX1000_.jpg" alt="Smurfs Movie Poster" class="w-48 mx-auto rounded-lg shadow-lg -mt-24 mb-6 border-4 border-white">
                 <h1 class="text-5xl font-black text-yellow-300 tracking-wide" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">SVA Movie Night</h1>
                 <h2 class="text-3xl font-bold mt-2">Featuring The Smurfs</h2>
                 <p class="text-lg mt-4 bg-blue-500/50 inline-block px-4 py-1 rounded-full">Friday, October 3rd</p>
@@ -96,7 +96,7 @@
         <div id="page-confirmation" class="hidden">
             <div class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center">
                  <h1 class="text-4xl font-black text-yellow-300 tracking-wide" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Thank You!</h1>
-                 <p class="mt-4 text-lg">Your registration is confirmed. We can't wait to see you!</p>
+                 <p class="mt-4 text-lg">Your registration is confirmed. A confirmation email with your ticket has been sent.</p>
                  
                  <div id="confirmation-details" class="mt-6 bg-white text-gray-800 p-6 rounded-xl print-area">
                     <h3 class="text-xl font-bold">Your Reservation</h3>
@@ -148,25 +148,32 @@
 
             fetch(WEB_APP_URL, {
                 method: 'POST',
-                mode: 'no-cors', // This helps bypass certain browser security checks (CORS)
                 body: JSON.stringify(formData),
                 headers: {
-                    'Content-Type': 'text/plain;charset=utf-8', // Use text/plain to avoid preflight
+                    'Content-Type': 'application/json',
                 }
             })
-            // Since this is a no-cors request, we can't read the response directly.
-            // We will simulate success and refresh the parent portal to get updated data.
-            .then(() => {
-                // We can't get the QR code back directly with no-cors,
-                // so we will show a generic success message and mention the email.
-                document.getElementById('conf-name').textContent = `Name: ${formData.name}`;
-                document.getElementById('conf-guests').textContent = `An email with your QR code has been sent to ${formData.email}.`;
-                document.getElementById('conf-qrcode').innerHTML = '<p class="text-sm font-bold">Please check your email for your ticket.</p>';
-                showPage('page-confirmation');
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('conf-name').textContent = `Name: ${data.name}`;
+                    document.getElementById('conf-guests').textContent = `Total Guests: ${data.totalGuests}`;
+                    
+                    const qrCodeContainer = document.getElementById('conf-qrcode');
+                    qrCodeContainer.innerHTML = '';
+                    const qr = qrcode(0, 'M');
+                    qr.addData(data.qrCodeText);
+                    qr.make();
+                    qrCodeContainer.innerHTML = qr.createImgTag(5, 4); // size, margin
+
+                    showPage('page-confirmation');
+                } else {
+                    throw new Error(data.message || 'An unknown error occurred.');
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert(`Submission failed: There was a network error. Please try again.`);
+                alert(`Submission failed: ${error.message}`);
                 showPage('page-form'); // Go back to the form on error
             });
         });
