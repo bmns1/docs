@@ -123,7 +123,7 @@
     </div>
 
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyXR747DT2sH_K-rvtoKEObWo5OYUpgUhBMWG7zwm4B3uliAGLZ1Jq0bZ2onc_U-8g/exec';
+         const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbygbcAdVtuJ4sLtLBSSLbRUE0pZaTMo8d1kmHgwl6qtdmHV90qdqh3kvhjwWY-Ut-2Ruw/exec'; // <-- IMPORTANT: PASTE YOUR DEPLOYED WEB APP URL HERE
 
         function showPage(pageId) {
             document.getElementById('page-landing').classList.add('hidden');
@@ -147,26 +147,41 @@
 
             fetch(WEB_APP_URL, {
                 method: 'POST',
-                mode: 'no-cors',
                 body: JSON.stringify(formData),
                 headers: {
-                    'Content-Type': 'text/plain;charset=utf-8',
+                    'Content-Type': 'application/json',
                 }
             })
-            .then(() => {
-                document.getElementById('conf-name').textContent = `Name: ${formData.name}`;
-                const totalGuests = parseInt(formData.adults, 10) + parseInt(formData.kids, 10);
-                document.getElementById('conf-guests').textContent = `Total Guests: ${totalGuests}`;
-                
-                showPage('page-confirmation');
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    document.getElementById('conf-name').textContent = `Name: ${data.name}`;
+                    document.getElementById('conf-guests').textContent = `Total Guests: ${data.totalGuests}`;
+                    
+                    const qrCodeContainer = document.getElementById('conf-qrcode');
+                    qrCodeContainer.innerHTML = '';
+                    const qr = qrcode(0, 'M');
+                    qr.addData(data.qrCodeText);
+                    qr.make();
+                    qrCodeContainer.innerHTML = qr.createImgTag(5, 4); // size, margin
+
+                    showPage('page-confirmation');
+                } else {
+                    throw new Error(data.message || 'An unknown error occurred.');
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert(`Submission failed: The request was blocked. Please ensure the backend script is deployed correctly.`);
+                alert(`Submission failed: ${error.message}`);
                 showPage('page-form'); // Go back to the form on error
             });
         });
     </script>
 </body>
 </html>
+
+
+
+
+
 
