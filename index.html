@@ -1,137 +1,128 @@
-
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVA Movie Night RSVP</title>
+    <title>SVA Coffee with the Board RSVP</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/qrcode-generator/qrcode.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/phosphor-icons"></script>
     <style>
         body {
-            font-family: 'Nunito', sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc; /* Slate-50 background from Portal */
         }
-        .bg-movie-night {
-            background-color: #0f766e; /* A vibrant teal color */
-            /* A fun pattern of subtle, sparkling stars */
-            background-image: url("data:image/svg+xml,%3csvg width='100' height='100' xmlns='http://www.w3.org/2000/svg'%3e%3cpolygon points='50,0 61,35 98,35 68,57 79,91 50,70 21,91 32,57 2,35 39,35' fill='rgba(255, 255, 255, 0.1)'/%3e%3c/svg%3e");
-            background-size: 80px 80px;
-        }
-        @media print {
-            body * {
-                visibility: hidden;
-            }
-            #page-confirmation, #page-confirmation * {
-                visibility: visible;
-            }
-            #page-confirmation {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-            }
+        /* Hide number input arrows */
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
     </style>
 </head>
-<body class="bg-movie-night text-white min-h-screen flex items-center justify-center p-4">
+<body class="antialiased text-slate-800 min-h-screen flex flex-col">
 
-    <div class="w-full max-w-2xl mx-auto">
-        <!-- Page 1: Landing Page -->
-        <div id="page-landing">
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center">
-                <img src="https://github.com/bmns1/docs/blob/main/smurfs1.jpg?raw=true" alt="Smurfs Movie Poster" class="w-48 mx-auto rounded-lg shadow-lg -mt-24 mb-6 border-4 border-white">
-                <h1 class="text-5xl font-black text-yellow-300 tracking-wide" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">SVA Movie Night</h1>
-                <h2 class="text-3xl font-bold mt-2">Featuring The Smurfs</h2>
-                <p class="text-lg mt-4 bg-blue-500/50 inline-block px-4 py-1 rounded-full">Friday, October 3rd</p>
-                <p class="mt-6 text-lg">RSVP Window Closed! See you at the next event inshallah.</p>
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0">
+                        <img src="https://raw.githubusercontent.com/bmns1/parent-portal/main/logo.png" alt="SVA Logo" class="h-12 w-auto">
+                    </div>
+                    <div class="ml-4">
+                        <h1 class="text-xl font-bold text-slate-900">Silicon Valley Academy</h1>
+                        <p class="text-sm text-slate-500">Event Registration</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="flex-grow flex items-center justify-center p-4">
+        <div class="w-full max-w-lg">
+            
+            <div id="page-form" class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
+                <div class="bg-teal-600 p-6 text-center">
+                    <i class="ph-coffee text-6xl text-white/90"></i>
+                    <h2 class="text-2xl font-bold text-white mt-4">Coffee with the Board</h2>
+                    <p class="text-teal-100 mt-2">Friday, January 30, 2026 at 8:30 am</p>
+		    <p class="text-teal-100 mt-2">In-person only at the school gym</p>
+                </div>
                 
-                <div class="mt-8">
-                    
-                </div>
+                <div class="p-8">
+                    <p class="text-slate-600 mb-6 leading-relaxed">
+                        Join us for an open dialogue with the SVA Board members. This is an opportunity to hear updates on school initiatives, ask questions, and share your feedback in a casual setting. Coffee and light refreshments will be provided.
+                    </p>
 
-                <div class="mt-6 bg-white/20 p-4 rounded-lg">
-                    <p class="font-bold">Pizza Ordering Window Closed!</p>
-                    <a href="" target="_blank" class="text-yellow-300 hover:text-yellow-200 underline">Click Here to Order Now</a>
-                </div>
-            </div>
-        </div>
-
-        <!-- Page 2: Registration Form -->
-        <div id="page-form" class="hidden">
-             <div class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl p-8">
-                <h2 class="text-3xl font-bold text-center mb-6">RSVP for Movie Night</h2>
-                <form id="rsvp-form" class="space-y-4">
-                    <div>
-                        <label for="name" class="block mb-1 font-semibold">Your Full Name</label>
-                        <input type="text" id="name" name="name" class="w-full bg-white/20 border-2 border-white/30 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-300" required>
-                    </div>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <form id="rsvp-form" class="space-y-5">
                         <div>
-                            <label for="adults" class="block mb-1 font-semibold">Number of Adults</label>
-                            <input type="number" id="adults" name="adults" min="1" value="1" class="w-full bg-white/20 border-2 border-white/30 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-300" required>
+                            <label for="name" class="block text-sm font-medium text-slate-700">Full Name</label>
+                            <input type="text" id="name" name="name" placeholder="e.g. Salah Hassan" class="mt-1 block w-full px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors" required>
                         </div>
+                        
                         <div>
-                            <label for="kids" class="block mb-1 font-semibold">Number of Kids</label>
-                            <input type="number" id="kids" name="kids" min="0" value="0" class="w-full bg-white/20 border-2 border-white/30 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-300" required>
+                            <label for="email" class="block text-sm font-medium text-slate-700">Email Address</label>
+                            <input type="email" id="email" name="email" placeholder="e.g. saleh@domain.com" class="mt-1 block w-full px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors" required>
                         </div>
-                    </div>
-                    <div>
-                        <label for="email" class="block mb-1 font-semibold">Email Address</label>
-                        <input type="email" id="email" name="email" class="w-full bg-white/20 border-2 border-white/30 rounded-lg px-4 py-2 focus:outline-none focus:border-yellow-300" required>
-                    </div>
-                    <div class="pt-4">
-                        <button type="submit" class="w-full bg-yellow-400 text-blue-900 font-bold text-xl px-12 py-4 rounded-xl shadow-lg hover:bg-yellow-300 transition-transform transform hover:scale-105">Submit RSVP</button>
-                    </div>
-                </form>
-            </div>
-        </div>
 
-          <!-- Page 3: Confirmation -->
-        <div id="page-confirmation" class="hidden">
-            <div class="bg-white/10 backdrop-blur-sm rounded-2xl shadow-2xl p-8 text-center">
-                 <h1 class="text-4xl font-black text-yellow-300 tracking-wide" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.5);">Thank You!</h1>
-                 <p class="mt-4 text-lg">Your registration is confirmed.</p>
-                 
-                 <div id="confirmation-details" class="mt-6 bg-white text-gray-800 p-6 rounded-xl">
-                    <h3 class="text-xl font-bold">Your Reservation</h3>
-                    <p id="conf-name" class="mt-2"></p>
-                    <p id="conf-guests"></p>
-                    <div id="conf-qrcode" class="mx-auto my-4 p-2 bg-white inline-block">
-                        <p class="font-semibold text-teal-700">A ticket with your QR code has been sent to your email address.</p>
-                    </div>
-                    <p class="text-sm text-gray-500">Please present your ticket email at check-in.</p>
-                 </div>
-                 
-                 <div class="mt-6 flex flex-col sm:flex-row gap-4 justify-center">
-                     <button onclick="window.print()" class="w-full sm:w-auto bg-white/20 text-white font-bold px-6 py-3 rounded-xl shadow-lg hover:bg-white/30 transition">Print Confirmation</button>
-                     <a href="" target="_blank" class="w-full sm:w-auto block bg-yellow-400 text-blue-900 font-bold px-6 py-3 rounded-xl shadow-lg hover:bg-yellow-300 transition">Pizza Ordering Window Closed!</a>
-                 </div>
+                        <div>
+                            <label for="questions" class="block text-sm font-medium text-slate-700">Questions or Topics (Optional)</label>
+                            <p class="text-xs text-slate-500 mb-2">Is there a specific topic or question you would like the board to address?</p>
+                            <textarea id="questions" name="questions" rows="3" placeholder="Type your question here..." class="mt-1 block w-full px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors"></textarea>
+                        </div>
+
+                        <div class="pt-2">
+                            <button type="submit" class="w-full bg-teal-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-teal-700 transition shadow-sm flex justify-center items-center">
+                                <span>Confirm RSVP</span>
+                            </button>
+                        </div>
+                    </form>
+                </div>
             </div>
+
+            <div id="page-confirmation" class="hidden bg-white rounded-xl shadow-lg border border-slate-200 p-8 text-center">
+                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                    <i class="ph-check text-3xl text-green-600"></i>
+                </div>
+                <h2 class="text-2xl font-bold text-slate-900">Registration Confirmed!</h2>
+                <p class="text-slate-600 mt-2">We look forward to seeing you at the event.</p>
+                
+                <div class="mt-6 bg-slate-50 p-4 rounded-lg border border-slate-200 text-left text-sm">
+                    <p class="text-slate-800 font-semibold mb-2">Your Details:</p>
+                    <p><span class="text-slate-500">Name:</span> <span id="conf-name" class="font-medium"></span></p>
+                    <p class="mt-1"><span class="text-slate-500">Email:</span> <span id="conf-email" class="font-medium"></span></p>
+                </div>
+                
+                <div class="mt-6">
+                    <p class="text-xs text-slate-500 mb-4">A confirmation email has been sent to your inbox.</p>
+                    <button onclick="location.reload()" class="text-teal-600 font-semibold hover:underline">
+                        Register another person
+                    </button>
+                </div>
+            </div>
+
+            <div id="loading" class="hidden text-center p-8">
+                <i class="ph-spinner-gap text-5xl text-teal-600 animate-spin"></i>
+                <p class="mt-4 text-slate-600 font-medium">Submitting your RSVP...</p>
+            </div>
+
         </div>
-        
-        <!-- Loading Spinner -->
-        <div id="loading" class="hidden text-center p-8">
-            <svg class="animate-spin h-10 w-10 text-white mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-            </svg>
-            <p class="mt-4">Submitting your RSVP...</p>
+    </main>
+
+    <footer class="bg-white border-t border-slate-200 mt-auto">
+        <div class="max-w-7xl mx-auto py-6 px-4 text-center text-slate-500 text-sm">
+            &copy; 2026 Silicon Valley Academy.
         </div>
-    </div>
+    </footer>
 
     <script>
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbygbcAdVtuJ4sLtLBSSLbRUE0pZaTMo8d1kmHgwl6qtdmHV90qdqh3kvhjwWY-Ut-2Ruw/exec'; // <-- IMPORTANT: PASTE YOUR DEPLOYED WEB APP URL HERE
+        // TODO: PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyFrlxi9KOPAsEo_2PQ0N0rBHA6-Y5CSI398dStEuJEn17fW1Rv15ECWDLA1xBSVjr1/exec'; 
 
         function showPage(pageId) {
-            document.getElementById('page-landing').classList.add('hidden');
-            document.getElementById('page-form').classList.add('hidden');
-            document.getElementById('page-confirmation').classList.add('hidden');
-            document.getElementById('loading').classList.add('hidden');
-            
+            ['page-form', 'page-confirmation', 'loading'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
             document.getElementById(pageId).classList.remove('hidden');
         }
 
@@ -141,33 +132,25 @@
 
             const formData = {
                 name: document.getElementById('name').value,
-                adults: document.getElementById('adults').value,
-                kids: document.getElementById('kids').value,
                 email: document.getElementById('email').value,
+                questions: document.getElementById('questions').value
             };
 
             fetch(WEB_APP_URL, {
                 method: 'POST',
-                mode: 'no-cors', // This helps bypass certain browser security checks (CORS)
+                mode: 'no-cors',
                 body: JSON.stringify(formData),
-                headers: {
-                    'Content-Type': 'text/plain;charset=utf-8', // Use text/plain to avoid preflight
-                }
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
             })
-            // Since this is a no-cors request, we can't read the response directly.
-            // We will simulate success and refresh the parent portal to get updated data.
             .then(() => {
-                // We can't get the QR code back directly with no-cors,
-                // so we will show a generic success message and mention the email.
-                document.getElementById('conf-name').textContent = `Name: ${formData.name}`;
-                document.getElementById('conf-guests').textContent = `An email with your QR code has been sent to ${formData.email}.`;
-                document.getElementById('conf-qrcode').innerHTML = '<p class="text-sm font-bold">Please check your email for your ticket.</p>';
+                document.getElementById('conf-name').textContent = formData.name;
+                document.getElementById('conf-email').textContent = formData.email;
                 showPage('page-confirmation');
             })
             .catch(error => {
                 console.error('Error:', error);
-                alert(`Submission failed: There was a network error. Please try again.`);
-                showPage('page-form'); // Go back to the form on error
+                alert('Submission failed. Please check your connection and try again.');
+                showPage('page-form');
             });
         });
     </script>
