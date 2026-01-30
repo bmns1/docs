@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVA Coffee with the Board RSVP</title>
+    <title>SVA Teachers' Picnic RSVP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/phosphor-icons"></script>
     <style>
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #f8fafc; /* Slate-50 background from Portal */
+            background-color: #f8fafc;
         }
         /* Hide number input arrows */
         input::-webkit-outer-spin-button,
@@ -31,7 +31,7 @@
                     </div>
                     <div class="ml-4">
                         <h1 class="text-xl font-bold text-slate-900">Silicon Valley Academy</h1>
-                        <p class="text-sm text-slate-500">Event Registration</p>
+                        <p class="text-sm text-slate-500">100th Day Celebration</p>
                     </div>
                 </div>
             </div>
@@ -43,15 +43,20 @@
             
             <div id="page-form" class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
                 <div class="bg-teal-600 p-6 text-center">
-                    <i class="ph-coffee text-6xl text-white/90"></i>
-                    <h2 class="text-2xl font-bold text-white mt-4">Coffee with the Board</h2>
-                    <p class="text-teal-100 mt-2">Friday, January 30, 2026 at 8:30 am</p>
-		    <p class="text-teal-100 mt-2">In-person only at the school gym</p>
+                    <i class="ph-confetti text-6xl text-white/90"></i>
+                    <h2 class="text-2xl font-bold text-white mt-4">Teachers' Weekend Picnic</h2>
+                    <p class="text-teal-100 mt-2">Celebrating 100 Days of School!</p>
+                    
+                    <div class="mt-4 bg-teal-700/50 rounded-lg p-3 text-sm text-white border border-teal-500">
+                        <p class="font-semibold">Saturday, February 7 @ 12:00 PM - 5:00 PM</p>
+                        <p class="mt-1 opacity-90">Hellyer Park - Buena Vista Group Area</p>
+                        <p class="text-xs opacity-75 mt-1">989 Hellyer Ave., San Jose, CA 95111</p>
+                    </div>
                 </div>
                 
                 <div class="p-8">
                     <p class="text-slate-600 mb-6 leading-relaxed">
-                        Join us for an open dialogue with the SVA Board members. This is an opportunity to hear updates on school initiatives, ask questions, and share your feedback in a casual setting. Coffee and light refreshments will be provided.
+                        We welcome our wonderful teachers and their families to have lunch and enjoy some quality time together. Join Ahmed Sawaby and Norhan Khafagy for a fun afternoon in the park! No need to bring anything, just relax and enjoy the weekend insha'Allah!
                     </p>
 
                     <form id="rsvp-form" class="space-y-5">
@@ -66,9 +71,19 @@
                         </div>
 
                         <div>
-                            <label for="questions" class="block text-sm font-medium text-slate-700">Questions or Topics (Optional)</label>
-                            <p class="text-xs text-slate-500 mb-2">Is there a specific topic or question you would like the board to address?</p>
-                            <textarea id="questions" name="questions" rows="3" placeholder="Type your question here..." class="mt-1 block w-full px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors"></textarea>
+                            <label for="attendees" class="block text-sm font-medium text-slate-700">Number of Attendees (Total)</label>
+                            <p class="text-xs text-slate-500 mb-1">Please include yourself and family members.</p>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                    <i class="ph-users text-slate-400"></i>
+                                </div>
+                                <input type="number" id="attendees" name="attendees" min="1" value="1" class="mt-1 block w-full pl-10 pr-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors" required>
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="specialRequests" class="block text-sm font-medium text-slate-700">Special Requests / Dietary Restrictions</label>
+                            <textarea id="specialRequests" name="specialRequests" rows="2" placeholder="e.g. Allergies, Gluten-free, etc." class="mt-1 block w-full px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors"></textarea>
                         </div>
 
                         <div class="pt-2">
@@ -84,26 +99,26 @@
                 <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
                     <i class="ph-check text-3xl text-green-600"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-900">Registration Confirmed!</h2>
-                <p class="text-slate-600 mt-2">We look forward to seeing you at the event.</p>
+                <h2 class="text-2xl font-bold text-slate-900">You're on the list!</h2>
+                <p class="text-slate-600 mt-2">Thank you for all that you do. We can't wait to see you.</p>
                 
                 <div class="mt-6 bg-slate-50 p-4 rounded-lg border border-slate-200 text-left text-sm">
-                    <p class="text-slate-800 font-semibold mb-2">Your Details:</p>
+                    <p class="text-slate-800 font-semibold mb-2">RSVP Details:</p>
                     <p><span class="text-slate-500">Name:</span> <span id="conf-name" class="font-medium"></span></p>
-                    <p class="mt-1"><span class="text-slate-500">Email:</span> <span id="conf-email" class="font-medium"></span></p>
+                    <p class="mt-1"><span class="text-slate-500">Party Size:</span> <span id="conf-attendees" class="font-medium"></span></p>
                 </div>
                 
                 <div class="mt-6">
                     <p class="text-xs text-slate-500 mb-4">A confirmation email has been sent to your inbox.</p>
                     <button onclick="location.reload()" class="text-teal-600 font-semibold hover:underline">
-                        Register another person
+                        Register another family
                     </button>
                 </div>
             </div>
 
             <div id="loading" class="hidden text-center p-8">
                 <i class="ph-spinner-gap text-5xl text-teal-600 animate-spin"></i>
-                <p class="mt-4 text-slate-600 font-medium">Submitting your RSVP...</p>
+                <p class="mt-4 text-slate-600 font-medium">Saving your spot...</p>
             </div>
 
         </div>
@@ -116,8 +131,8 @@
     </footer>
 
     <script>
-        // TODO: PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbyFrlxi9KOPAsEo_2PQ0N0rBHA6-Y5CSI398dStEuJEn17fW1Rv15ECWDLA1xBSVjr1/exec'; 
+        // TODO: PASTE YOUR NEW DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE IF IT CHANGED
+        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwKgNK_LL2PJ3dnq5r7-B-MiR1Mhq_SDVHLMt6jhLI096xLNdX7XMdM6YyjUnVB-dg0QA/exec'; 
 
         function showPage(pageId) {
             ['page-form', 'page-confirmation', 'loading'].forEach(id => {
@@ -133,7 +148,8 @@
             const formData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
-                questions: document.getElementById('questions').value
+                attendees: document.getElementById('attendees').value,
+                specialRequests: document.getElementById('specialRequests').value
             };
 
             fetch(WEB_APP_URL, {
@@ -144,7 +160,7 @@
             })
             .then(() => {
                 document.getElementById('conf-name').textContent = formData.name;
-                document.getElementById('conf-email').textContent = formData.email;
+                document.getElementById('conf-attendees').textContent = formData.attendees;
                 showPage('page-confirmation');
             })
             .catch(error => {
