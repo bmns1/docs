@@ -3,172 +3,419 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVA Teachers' Picnic RSVP</title>
+    <title>SVA — Donor Appreciation Dinner</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/phosphor-icons"></script>
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
+        :root {
+            /* SVA Premium Palette */
+            --clr-forest: #143628;
+            --clr-sage: #5b8274;
+            --clr-gold: #c29b3c;
+            --clr-gold-light: #fbf8f0;
+            --clr-cream: #f9f8f6;
+            --clr-border: #e6e4df;
+            --clr-text-main: #2c2a29;
+            --clr-text-muted: #6b6965;
         }
-        /* Hide number input arrows */
-        input::-webkit-outer-spin-button,
-        input::-webkit-inner-spin-button {
-            -webkit-appearance: none;
-            margin: 0;
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            background-color: var(--clr-cream);
+            color: var(--clr-text-main);
+            -webkit-font-smoothing: antialiased;
+        }
+
+        .font-serif {
+            font-family: 'Lora', serif;
+        }
+
+        /* Divider Elements */
+        .divider {
+            display: flex; align-items: center; gap: 14px;
+            color: var(--clr-gold);
+        }
+        .divider::before, .divider::after {
+            content: ""; flex: 1; height: 1px;
+            background: linear-gradient(to right, transparent, rgba(194, 155, 60, 0.4), transparent);
+        }
+
+        /* Buttons & Inputs (Matching Portal Style) */
+        .btn-primary {
+            background: var(--clr-forest);
+            color: #fff;
+            transition: all 0.2s ease;
+            box-shadow: 0 4px 12px rgba(20, 54, 40, 0.15);
+        }
+        .btn-primary:hover {
+            background: #0d261b;
+            transform: translateY(-1px);
+            box-shadow: 0 6px 16px rgba(20, 54, 40, 0.25);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            border: 1px solid var(--clr-border);
+            background: #fff;
+            color: var(--clr-text-main);
+            transition: all 0.2s ease;
+            font-size: 0.95rem;
+        }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--clr-gold);
+            box-shadow: 0 0 0 3px rgba(194, 155, 60, 0.15);
+        }
+        select.form-input { 
+            appearance: none; 
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b6965' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); 
+            background-position: right 0.75rem center; 
+            background-repeat: no-repeat; 
+            background-size: 1.5em 1.5em; 
+            padding-right: 2.5rem; 
+        }
+
+        /* RSVP Radio Cards */
+        .rsvp-choice {
+            cursor: pointer;
+            transition: all 0.2s ease;
+            background: #fff;
+            border: 1px solid var(--clr-border);
+        }
+        .rsvp-choice:hover {
+            border-color: var(--clr-gold);
+            background: var(--clr-gold-light);
+        }
+        .rsvp-choice.selected-accept {
+            background-color: var(--clr-forest);
+            color: #fff;
+            border-color: var(--clr-forest);
+            box-shadow: 0 4px 12px rgba(20, 54, 40, 0.15);
+        }
+        .rsvp-choice.selected-accept .choice-icon { color: var(--clr-gold); }
+        .rsvp-choice.selected-accept p { color: #fff; }
+        
+        .rsvp-choice.selected-decline {
+            background-color: #fafafa;
+            color: var(--clr-text-muted);
+            border-color: #d4d4d4;
+            opacity: 0.8;
+        }
+        .rsvp-choice.selected-decline .choice-icon { color: #888; }
+
+        /* Stylized Card Frame */
+        .card-frame {
+            background: #fff;
+            border: 1px solid var(--clr-border);
+            border-radius: 1rem;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+        }
+        
+        .stamp {
+            display: inline-block;
+            padding: 4px 12px;
+            border: 1px solid var(--clr-gold);
+            color: var(--clr-gold);
+            font-size: 0.6rem;
+            font-weight: 700;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            border-radius: 4px;
+        }
+        
+        .section-label {
+            font-size: 0.65rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--clr-text-muted);
         }
     </style>
 </head>
-<body class="antialiased text-slate-800 min-h-screen flex flex-col">
+<body class="min-h-screen flex flex-col relative">
 
-    <header class="bg-white shadow-sm sticky top-0 z-40">
-        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="flex items-center justify-between h-20">
-                <div class="flex items-center">
-                    <div class="flex-shrink-0">
-                        <img src="https://raw.githubusercontent.com/bmns1/parent-portal/main/logo.png" alt="SVA Logo" class="h-12 w-auto">
-                    </div>
-                    <div class="ml-4">
-                        <h1 class="text-xl font-bold text-slate-900">Silicon Valley Academy</h1>
-                        <p class="text-sm text-slate-500">100th Day Celebration</p>
-                    </div>
+    <header class="bg-white border-b border-[var(--clr-border)] sticky top-0 z-20 shadow-sm">
+        <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 rounded-xl bg-[var(--clr-gold-light)] flex items-center justify-center border border-[#ebdca8]">
+                    <span class="font-serif font-bold text-lg text-[var(--clr-forest)]">SVA</span>
+                </div>
+                <div class="pl-2">
+                    <p class="font-serif text-lg font-medium text-[var(--clr-forest)] leading-tight">Silicon Valley Academy</p>
+                    <p class="text-[10px] tracking-widest uppercase text-[var(--clr-sage)] font-semibold mt-0.5">Endowment Management</p>
                 </div>
             </div>
+            <span class="stamp hidden sm:inline-block bg-[var(--clr-gold-light)]">Private Invitation</span>
         </div>
     </header>
 
-    <main class="flex-grow flex items-center justify-center p-4">
-        <div class="w-full max-w-lg">
-            
-            <div id="page-form" class="bg-white rounded-xl shadow-lg border border-slate-200 overflow-hidden">
-                <div class="bg-teal-600 p-6 text-center">
-                    <i class="ph-confetti text-6xl text-white/90"></i>
-                    <h2 class="text-2xl font-bold text-white mt-4">Teachers' Weekend Picnic</h2>
-                    <p class="text-teal-100 mt-2">Celebrating 100 Days of School!</p>
+    <main class="flex-grow flex items-start justify-center p-4 sm:p-8 w-full">
+        <div class="w-full max-w-2xl relative z-10">
+
+            <div id="page-invalid" class="hidden card-frame p-12 text-center">
+                <i class="ph-warning-circle text-5xl text-[var(--clr-sage)]"></i>
+                <h2 class="font-serif text-3xl mt-4 text-[var(--clr-forest)]">Invitation Not Recognized</h2>
+                <p class="text-[var(--clr-text-muted)] mt-3 leading-relaxed font-medium">
+                    The link you followed is invalid or has expired. If you believe this is an error,
+                    kindly reply to your invitation email or contact our office directly.
+                </p>
+            </div>
+
+            <div id="page-already" class="hidden card-frame p-12 text-center">
+                <i class="ph-check-circle text-5xl text-[var(--clr-gold)]"></i>
+                <h2 class="font-serif text-3xl mt-4 text-[var(--clr-forest)]">Response Received</h2>
+                <p class="text-[var(--clr-text-muted)] mt-3 leading-relaxed font-medium">
+                    We have already recorded your reply, <span id="already-name" class="font-semibold text-[var(--clr-text-main)]"></span>.
+                    Should you need to amend your response, please reach out to us directly.
+                </p>
+            </div>
+
+            <div id="page-form" class="hidden card-frame">
+
+                <div class="bg-[var(--clr-forest)] text-white p-12 text-center relative overflow-hidden">
+                    <div class="absolute inset-4 border border-[var(--clr-gold)] opacity-30 rounded-lg pointer-events-none"></div>
                     
-                    <div class="mt-4 bg-teal-700/50 rounded-lg p-3 text-sm text-white border border-teal-500">
-                        <p class="font-semibold">Saturday, February 7 @ 12:00 PM - 5:00 PM</p>
-                        <p class="mt-1 opacity-90">Hellyer Park - Buena Vista Group Area</p>
-                        <p class="text-xs opacity-75 mt-1">989 Hellyer Ave., San Jose, CA 95111</p>
-                    </div>
-                </div>
-                
-                <div class="p-8">
-                    <p class="text-slate-600 mb-6 leading-relaxed">
-                        We welcome our wonderful teachers and their families to have lunch and enjoy some quality time together. Join Ahmed Sawaby and Norhan Khafagy for a fun afternoon in the park! No need to bring anything, just relax and enjoy the weekend insha'Allah!
+                    <p class="text-[10px] tracking-[0.25em] font-semibold uppercase text-[var(--clr-gold)] mb-6">Silicon Valley Academy</p>
+                    <p class="font-serif text-xl italic text-[#d4d9d6]">requests the pleasure of the company of</p>
+                    
+                    <h1 id="invitee-name" class="font-serif text-4xl sm:text-5xl font-medium mt-4 text-[var(--clr-gold-light)]">&nbsp;</h1>
+                    
+                    <div class="divider mt-8"><i class="ph-diamond text-sm"></i></div>
+                    
+                    <p class="font-serif text-2xl mt-8 text-white">at the Donor Appreciation Dinner</p>
+                    <p class="text-sm mt-3 text-[#b4c2bc] max-w-md mx-auto leading-relaxed font-medium">
+                        An evening in gratitude to the benefactors whose generosity sustains our mission,
+                        with the stewardship of the One Well Endowment.
                     </p>
 
-                    <form id="rsvp-form" class="space-y-5">
-                        <div>
-                            <label for="name" class="block text-sm font-medium text-slate-700">Full Name</label>
-                            <input type="text" id="name" name="name" placeholder="e.g. Salah Hassan" class="mt-1 block w-full px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors" required>
+                    <div class="mt-10 grid sm:grid-cols-2 gap-6 text-sm max-w-md mx-auto">
+                        <div class="bg-black/10 rounded-lg p-4 border border-white/5">
+                            <p class="text-[9px] tracking-[0.2em] font-bold uppercase text-[var(--clr-gold)]">Date</p>
+                            <p class="mt-2 font-serif text-lg text-white" id="event-date">Tuesday, 28 April 2026</p>
                         </div>
+                        <div class="bg-black/10 rounded-lg p-4 border border-white/5">
+                            <p class="text-[9px] tracking-[0.2em] font-bold uppercase text-[var(--clr-gold)]">Reception</p>
+                            <p class="mt-2 font-serif text-lg text-white" id="event-time">6:00 in the evening</p>
+                        </div>
+                    </div>
+
+                    <div class="mt-8">
+                        <p class="text-[9px] tracking-[0.2em] font-bold uppercase text-[var(--clr-gold)]">Venue</p>
+                        <p class="font-serif text-xl mt-2 text-white" id="event-venue">Venue to be announced</p>
+                        <p class="text-xs text-[#b4c2bc] mt-1 font-medium" id="event-address">Final details will follow in advance of the evening</p>
+                    </div>
+                </div>
+
+                <div class="p-8 sm:p-12 bg-white">
+                    <div class="text-center mb-10">
+                        <p class="section-label text-[var(--clr-gold)] mb-2">Kindly Respond</p>
+                        <h2 class="font-serif text-3xl text-[var(--clr-forest)]">The favour of a reply is requested</h2>
+                        <p class="text-sm text-[var(--clr-text-muted)] mt-2 font-medium" id="rsvp-deadline">on or before the twentieth of April</p>
+                    </div>
+
+                    <form id="rsvp-form" class="space-y-8">
                         
                         <div>
-                            <label for="email" class="block text-sm font-medium text-slate-700">Email Address</label>
-                            <input type="email" id="email" name="email" placeholder="e.g. saleh@domain.com" class="mt-1 block w-full px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors" required>
+                            <label class="section-label block mb-3">Your Response</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <label class="rsvp-choice rounded-xl p-5 text-center block flex flex-col items-center justify-center gap-2" data-value="accept">
+                                    <input type="radio" name="response" value="accept" class="sr-only" required>
+                                    <i class="ph-check-circle-fill choice-icon text-3xl text-[var(--clr-gold)]"></i>
+                                    <p class="font-serif text-xl font-medium text-[var(--clr-text-main)]">Accepts with pleasure</p>
+                                </label>
+                                <label class="rsvp-choice rounded-xl p-5 text-center block flex flex-col items-center justify-center gap-2" data-value="decline">
+                                    <input type="radio" name="response" value="decline" class="sr-only">
+                                    <i class="ph-x-circle choice-icon text-3xl text-stone-400"></i>
+                                    <p class="font-serif text-xl font-medium text-[var(--clr-text-main)]">Declines with regret</p>
+                                </label>
+                            </div>
                         </div>
 
-                        <div>
-                            <label for="attendees" class="block text-sm font-medium text-slate-700">Number of Attendees (Total)</label>
-                            <p class="text-xs text-slate-500 mb-1">Please include yourself and family members.</p>
-                            <div class="relative">
-                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                                    <i class="ph-users text-slate-400"></i>
+                        <div id="accept-fields" class="space-y-6 hidden bg-stone-50 p-6 rounded-xl border border-stone-100">
+                            <div class="grid sm:grid-cols-2 gap-6">
+                                <div>
+                                    <label for="guestName" class="section-label block mb-2">Name as to appear</label>
+                                    <input type="text" id="guestName" name="guestName" class="form-input">
                                 </div>
-                                <input type="number" id="attendees" name="attendees" min="1" value="1" class="mt-1 block w-full pl-10 pr-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors" required>
+                                <div>
+                                    <label for="attendees" class="section-label block mb-2">Party of</label>
+                                    <select id="attendees" name="attendees" class="form-input bg-white cursor-pointer">
+                                        <option value="1">One</option>
+                                        <option value="2">Two</option>
+                                        <option value="3">Three</option>
+                                        <option value="4">Four</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div>
+                                <label for="companionNames" class="section-label block mb-2">Accompanying guest(s)</label>
+                                <input type="text" id="companionNames" name="companionNames" placeholder="Kindly list the names of your guests" class="form-input">
+                            </div>
+
+                            <div>
+                                <label for="dietary" class="section-label block mb-2">Dietary preferences</label>
+                                <input type="text" id="dietary" name="dietary" placeholder="e.g. Halal, vegetarian, allergies" class="form-input">
                             </div>
                         </div>
 
                         <div>
-                            <label for="specialRequests" class="block text-sm font-medium text-slate-700">Special Requests / Dietary Restrictions</label>
-                            <textarea id="specialRequests" name="specialRequests" rows="2" placeholder="e.g. Allergies, Gluten-free, etc." class="mt-1 block w-full px-4 py-3 rounded-md border border-slate-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 transition-colors"></textarea>
+                            <label for="comments" class="section-label block mb-2">A note to your host <span class="normal-case tracking-normal font-normal text-stone-400">(optional)</span></label>
+                            <textarea id="comments" name="comments" rows="3" placeholder="Any special requests, accessibility needs, or a personal message to the committee."
+                                class="form-input resize-none"></textarea>
                         </div>
 
-                        <div class="pt-2">
-                            <button type="submit" class="w-full bg-teal-600 text-white font-semibold py-3 px-6 rounded-lg hover:bg-teal-700 transition shadow-sm flex justify-center items-center">
-                                <span>Confirm RSVP</span>
+                        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between border-t border-[var(--clr-border)] gap-4">
+                            <p class="text-xs text-[var(--clr-text-muted)] font-medium flex items-center gap-1.5">
+                                <i class="ph-lock-key text-stone-400"></i> Your reply is private and confidential.
+                            </p>
+                            <button type="submit" class="btn-primary w-full sm:w-auto px-8 py-3 rounded-lg text-xs font-bold uppercase tracking-widest">
+                                Submit Reply
                             </button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div id="page-confirmation" class="hidden bg-white rounded-xl shadow-lg border border-slate-200 p-8 text-center">
-                <div class="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
-                    <i class="ph-check text-3xl text-green-600"></i>
+            <div id="page-confirmation" class="hidden card-frame p-12 text-center">
+                <div class="mx-auto flex items-center justify-center mb-6" style="width:80px;height:80px;border-radius:50%;background:var(--clr-forest);box-shadow:0 10px 30px rgba(20,54,40,0.2);">
+                    <i class="ph-check text-4xl text-[var(--clr-gold)]"></i>
                 </div>
-                <h2 class="text-2xl font-bold text-slate-900">You're on the list!</h2>
-                <p class="text-slate-600 mt-2">Thank you for all that you do. We can't wait to see you.</p>
-                
-                <div class="mt-6 bg-slate-50 p-4 rounded-lg border border-slate-200 text-left text-sm">
-                    <p class="text-slate-800 font-semibold mb-2">RSVP Details:</p>
-                    <p><span class="text-slate-500">Name:</span> <span id="conf-name" class="font-medium"></span></p>
-                    <p class="mt-1"><span class="text-slate-500">Party Size:</span> <span id="conf-attendees" class="font-medium"></span></p>
-                </div>
-                
-                <div class="mt-6">
-                    <p class="text-xs text-slate-500 mb-4">A confirmation email has been sent to your inbox.</p>
-                    <button onclick="location.reload()" class="text-teal-600 font-semibold hover:underline">
-                        Register another family
-                    </button>
-                </div>
+                <h2 class="font-serif text-4xl text-[var(--clr-forest)]">With our sincere thanks.</h2>
+                <p class="text-[var(--clr-text-muted)] mt-4 font-medium leading-relaxed max-w-md mx-auto" id="conf-message">
+                    Your reply has been recorded. A confirmation has been sent to your inbox,
+                    along with practical details for the evening.
+                </p>
+                <div class="divider mt-8"><i class="ph-diamond text-sm"></i></div>
+                <p class="font-serif italic text-xl mt-8 text-[var(--clr-sage)]">— Silicon Valley Academy</p>
             </div>
 
-            <div id="loading" class="hidden text-center p-8">
-                <i class="ph-spinner-gap text-5xl text-teal-600 animate-spin"></i>
-                <p class="mt-4 text-slate-600 font-medium">Saving your spot...</p>
+            <div id="loading" class="hidden card-frame p-16 text-center">
+                <i class="ph-circle-notch text-4xl text-[var(--clr-gold)] animate-spin mx-auto"></i>
+                <p class="mt-4 text-[10px] font-bold tracking-[0.2em] uppercase text-[var(--clr-text-muted)]">Recording your reply...</p>
             </div>
 
         </div>
     </main>
 
-    <footer class="bg-white border-t border-slate-200 mt-auto">
-        <div class="max-w-7xl mx-auto py-6 px-4 text-center text-slate-500 text-sm">
-            &copy; 2026 Silicon Valley Academy.
-        </div>
+    <footer class="mt-auto py-8 text-center text-[var(--clr-text-muted)] text-xs font-medium">
+        <p class="font-serif text-sm text-[var(--clr-forest)] mb-1">Silicon Valley Academy</p>
+        <p>Endowment stewarded by One Well Endowment Management.</p>
+        <p class="mt-3 opacity-60">&copy; 2026 Silicon Valley Academy. All rights reserved.</p>
     </footer>
 
     <script>
-        // TODO: PASTE YOUR NEW DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE IF IT CHANGED
-        const WEB_APP_URL = 'https://script.google.com/macros/s/AKfycbwKgNK_LL2PJ3dnq5r7-B-MiR1Mhq_SDVHLMt6jhLI096xLNdX7XMdM6YyjUnVB-dg0QA/exec'; 
+        const WEB_APP_URL = 'https://script.google.com/macros/s/REPLACE_ME/exec';
 
-        function showPage(pageId) {
-            ['page-form', 'page-confirmation', 'loading'].forEach(id => {
-                document.getElementById(id).classList.add('hidden');
-            });
-            document.getElementById(pageId).classList.remove('hidden');
+        const pages = ['page-form', 'page-confirmation', 'page-invalid', 'page-already', 'loading'];
+        function showPage(id) {
+            pages.forEach(p => document.getElementById(p).classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
         }
 
-        document.getElementById('rsvp-form').addEventListener('submit', function(e) {
-            e.preventDefault();
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        async function loadInvitation() {
+            if (!token) { showPage('page-invalid'); return; }
             showPage('loading');
+            try {
+                const res = await fetch(`${WEB_APP_URL}?action=lookup&token=${encodeURIComponent(token)}`);
+                const data = await res.json();
 
-            const formData = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                attendees: document.getElementById('attendees').value,
-                specialRequests: document.getElementById('specialRequests').value
-            };
+                if (!data.ok) { showPage('page-invalid'); return; }
 
-            fetch(WEB_APP_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                body: JSON.stringify(formData),
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' }
-            })
-            .then(() => {
-                document.getElementById('conf-name').textContent = formData.name;
-                document.getElementById('conf-attendees').textContent = formData.attendees;
-                showPage('page-confirmation');
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Submission failed. Please check your connection and try again.');
+                if (data.alreadyResponded) {
+                    document.getElementById('already-name').textContent = data.name || '';
+                    showPage('page-already');
+                    return;
+                }
+
+                document.getElementById('invitee-name').textContent = data.name || 'Esteemed Guest';
+                document.getElementById('guestName').value = data.name || '';
+
+                if (data.event) {
+                    if (data.event.date)     document.getElementById('event-date').textContent = data.event.date;
+                    if (data.event.time)     document.getElementById('event-time').textContent = data.event.time;
+                    if (data.event.venue)    document.getElementById('event-venue').textContent = data.event.venue;
+                    if (data.event.address)  document.getElementById('event-address').textContent = data.event.address;
+                    if (data.event.deadline) document.getElementById('rsvp-deadline').textContent = data.event.deadline;
+                }
+
                 showPage('page-form');
+            } catch (err) {
+                console.error(err);
+                showPage('page-invalid');
+            }
+        }
+
+        document.querySelectorAll('.rsvp-choice').forEach(choice => {
+            choice.addEventListener('click', () => {
+                document.querySelectorAll('.rsvp-choice').forEach(c => {
+                    c.classList.remove('selected-accept', 'selected-decline');
+                });
+                const value = choice.dataset.value;
+                choice.classList.add(value === 'accept' ? 'selected-accept' : 'selected-decline');
+                choice.querySelector('input').checked = true;
+                
+                // Animate fields reveal
+                const fields = document.getElementById('accept-fields');
+                if (value === 'accept') {
+                    fields.classList.remove('hidden');
+                } else {
+                    fields.classList.add('hidden');
+                }
+                
+                ['guestName','attendees'].forEach(id => {
+                    document.getElementById(id).required = (value === 'accept');
+                });
             });
         });
+
+        document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const response = document.querySelector('input[name="response"]:checked');
+            if (!response) return;
+
+            const payload = {
+                action: 'rsvp',
+                token: token,
+                response: response.value,
+                guestName: document.getElementById('guestName').value,
+                attendees: document.getElementById('attendees').value,
+                companionNames: document.getElementById('companionNames').value,
+                dietary: document.getElementById('dietary').value,
+                comments: document.getElementById('comments').value
+            };
+
+            showPage('loading');
+            try {
+                await fetch(WEB_APP_URL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' }
+                });
+                if (response.value === 'decline') {
+                    document.getElementById('conf-message').innerHTML =
+                        'Your regrets have been conveyed.<br>We are grateful for your continued partnership and hope to welcome you on another occasion.';
+                } else {
+                    document.getElementById('conf-message').innerHTML =
+                        'Your reply has been recorded. A confirmation has been sent to your inbox, along with practical details for the evening.';
+                }
+                showPage('page-confirmation');
+            } catch (err) {
+                console.error(err);
+                alert('We were unable to record your reply. Please try again shortly.');
+                showPage('page-form');
+            }
+        });
+
+        loadInvitation();
     </script>
 </body>
 </html>
