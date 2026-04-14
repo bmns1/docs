@@ -3,247 +3,226 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SVA — Donor Appreciation Dinner</title>
+    <title>Silicon Valley Academy — Donor Appreciation Dinner</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://unpkg.com/phosphor-icons"></script>
     <style>
         :root {
-            /* SVA Premium Palette */
-            --clr-forest: #143628;
-            --clr-sage: #5b8274;
-            --clr-gold: #c29b3c;
-            --clr-gold-light: #fbf8f0;
-            --clr-cream: #f9f8f6;
-            --clr-border: #e6e4df;
-            --clr-text-main: #2c2a29;
-            --clr-text-muted: #6b6965;
+            /* SVA teal + gold palette */
+            --ink: #0B3B38;        /* deep SVA teal */
+            --ink-soft: #0F766E;   /* teal-700 */
+            --teal: #0D9488;       /* SVA brand teal (matches legacy forms) */
+            --gold: #B08A3E;
+            --gold-soft: #D4B572;
+            --paper: #FAF7F1;
+            --paper-deep: #F1EAD8;
         }
-
         body {
-            font-family: 'DM Sans', sans-serif;
-            background-color: var(--clr-cream);
-            color: var(--clr-text-main);
-            -webkit-font-smoothing: antialiased;
+            font-family: 'Inter', sans-serif;
+            background-color: var(--paper);
+            color: var(--ink);
+        }
+        .font-display { font-family: 'Cormorant Garamond', serif; letter-spacing: 0.01em; }
+        .text-ink { color: var(--ink); }
+        .text-ink-soft { color: var(--ink-soft); }
+        .text-gold { color: var(--gold); }
+        .bg-ink { background-color: var(--ink); }
+        .bg-ink-soft { background-color: var(--ink-soft); }
+        .bg-gold { background-color: var(--gold); }
+        .bg-paper-deep { background-color: var(--paper-deep); }
+        .border-gold { border-color: var(--gold); }
+        .border-gold-soft { border-color: var(--gold-soft); }
+        .ring-gold:focus { --tw-ring-color: var(--gold); border-color: var(--gold); }
+        .hairline { border-color: rgba(176, 138, 62, 0.35); }
+
+        .sva-logo {
+            height: 52px; width: auto; display: block;
+        }
+        .crest {
+            width: 72px; height: 72px; border-radius: 50%;
+            background: linear-gradient(135deg, var(--gold), #8A6A2E);
+            display: flex; align-items: center; justify-content: center;
+            color: var(--paper);
+            box-shadow: 0 1px 0 rgba(255,255,255,0.3) inset, 0 10px 30px rgba(11,59,56,0.25);
         }
 
-        .font-serif {
-            font-family: 'Lora', serif;
-        }
-
-        /* Divider Elements */
         .divider {
             display: flex; align-items: center; gap: 14px;
-            color: var(--clr-gold);
+            color: var(--gold);
         }
         .divider::before, .divider::after {
             content: ""; flex: 1; height: 1px;
-            background: linear-gradient(to right, transparent, rgba(194, 155, 60, 0.4), transparent);
+            background: linear-gradient(to right, transparent, var(--gold-soft), transparent);
         }
 
-        /* Buttons & Inputs (Matching Portal Style) */
-        .btn-primary {
-            background: var(--clr-forest);
-            color: #fff;
-            transition: all 0.2s ease;
-            box-shadow: 0 4px 12px rgba(20, 54, 40, 0.15);
+        .btn-gold {
+            background-color: var(--gold); color: #fff;
+            transition: all 0.25s ease;
+            letter-spacing: 0.04em;
         }
-        .btn-primary:hover {
-            background: #0d261b;
-            transform: translateY(-1px);
-            box-shadow: 0 6px 16px rgba(20, 54, 40, 0.25);
+        .btn-gold:hover { background-color: #8A6A2E; transform: translateY(-1px); }
+        .btn-teal {
+            background-color: var(--teal); color: #fff;
+            transition: all 0.25s ease;
+            letter-spacing: 0.04em;
         }
+        .btn-teal:hover { background-color: var(--ink); transform: translateY(-1px); }
+        .btn-outline {
+            border: 1px solid var(--ink-soft); color: var(--ink);
+            transition: all 0.25s ease;
+        }
+        .btn-outline:hover { background-color: var(--ink); color: #fff; }
 
-        .form-input {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border-radius: 0.5rem;
-            border: 1px solid var(--clr-border);
+        input, textarea, select {
+            font-family: 'Inter', sans-serif;
             background: #fff;
-            color: var(--clr-text-main);
-            transition: all 0.2s ease;
-            font-size: 0.95rem;
         }
-        .form-input:focus {
+        input:focus, textarea:focus, select:focus {
             outline: none;
-            border-color: var(--clr-gold);
-            box-shadow: 0 0 0 3px rgba(194, 155, 60, 0.15);
-        }
-        select.form-input { 
-            appearance: none; 
-            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b6965' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e"); 
-            background-position: right 0.75rem center; 
-            background-repeat: no-repeat; 
-            background-size: 1.5em 1.5em; 
-            padding-right: 2.5rem; 
+            box-shadow: 0 0 0 3px rgba(176,138,62,0.15);
+            border-color: var(--gold);
         }
 
-        /* RSVP Radio Cards */
         .rsvp-choice {
             cursor: pointer;
             transition: all 0.2s ease;
-            background: #fff;
-            border: 1px solid var(--clr-border);
-        }
-        .rsvp-choice:hover {
-            border-color: var(--clr-gold);
-            background: var(--clr-gold-light);
         }
         .rsvp-choice.selected-accept {
-            background-color: var(--clr-forest);
+            background-color: var(--ink);
             color: #fff;
-            border-color: var(--clr-forest);
-            box-shadow: 0 4px 12px rgba(20, 54, 40, 0.15);
+            border-color: var(--ink);
         }
-        .rsvp-choice.selected-accept .choice-icon { color: var(--clr-gold); }
-        .rsvp-choice.selected-accept p { color: #fff; }
-        
+        .rsvp-choice.selected-accept .choice-icon { color: var(--gold-soft); }
         .rsvp-choice.selected-decline {
-            background-color: #fafafa;
-            color: var(--clr-text-muted);
-            border-color: #d4d4d4;
-            opacity: 0.8;
+            background-color: #3a1f1f;
+            color: #fff;
+            border-color: #3a1f1f;
         }
-        .rsvp-choice.selected-decline .choice-icon { color: #888; }
 
-        /* Stylized Card Frame */
-        .card-frame {
-            background: #fff;
-            border: 1px solid var(--clr-border);
-            border-radius: 1rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.03);
-            overflow: hidden;
-        }
-        
         .stamp {
             display: inline-block;
-            padding: 4px 12px;
-            border: 1px solid var(--clr-gold);
-            color: var(--clr-gold);
-            font-size: 0.6rem;
-            font-weight: 700;
-            letter-spacing: 0.15em;
+            padding: 4px 14px;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 10px;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
-            border-radius: 4px;
-        }
-        
-        .section-label {
-            font-size: 0.65rem;
-            font-weight: 700;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-            color: var(--clr-text-muted);
+            border-radius: 2px;
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col relative">
+<body class="antialiased min-h-screen flex flex-col">
 
-    <header class="bg-white border-b border-[var(--clr-border)] sticky top-0 z-20 shadow-sm">
-        <div class="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+    <header class="border-b hairline bg-paper-deep">
+        <div class="max-w-3xl mx-auto px-6 py-5 flex items-center justify-between">
             <div class="flex items-center gap-4">
-                <div class="w-10 h-10 rounded-xl bg-[var(--clr-gold-light)] flex items-center justify-center border border-[#ebdca8]">
-                    <span class="font-serif font-bold text-lg text-[var(--clr-forest)]">SVA</span>
-                </div>
-                <div class="pl-2">
-                    <p class="font-serif text-lg font-medium text-[var(--clr-forest)] leading-tight">Silicon Valley Academy</p>
-                    <p class="text-[10px] tracking-widest uppercase text-[var(--clr-sage)] font-semibold mt-0.5">Endowment Management</p>
+                <img src="https://raw.githubusercontent.com/bmns1/parent-portal/main/logo.png" alt="Silicon Valley Academy" class="sva-logo">
+                <div class="border-l hairline pl-4">
+                    <p class="font-display text-xl font-semibold text-ink leading-tight">Silicon Valley Academy</p>
+                    <p class="text-[11px] tracking-[0.25em] uppercase text-ink-soft">In partnership with One Well Endowment Management</p>
                 </div>
             </div>
-            <span class="stamp hidden sm:inline-block bg-[var(--clr-gold-light)]">Private Invitation</span>
+            <span class="stamp hidden sm:inline-block">Private Invitation</span>
         </div>
     </header>
 
-    <main class="flex-grow flex items-start justify-center p-4 sm:p-8 w-full">
-        <div class="w-full max-w-2xl relative z-10">
+    <main class="flex-grow flex items-start justify-center p-4 sm:p-8">
+        <div class="w-full max-w-2xl">
 
-            <div id="page-invalid" class="hidden card-frame p-12 text-center">
-                <i class="ph-warning-circle text-5xl text-[var(--clr-sage)]"></i>
-                <h2 class="font-serif text-3xl mt-4 text-[var(--clr-forest)]">Invitation Not Recognized</h2>
-                <p class="text-[var(--clr-text-muted)] mt-3 leading-relaxed font-medium">
+            <!-- TOKEN INVALID -->
+            <div id="page-invalid" class="hidden bg-white border hairline rounded-sm shadow-sm p-10 text-center">
+                <i class="ph-warning-circle text-5xl text-ink-soft"></i>
+                <h2 class="font-display text-3xl mt-4 text-ink">Invitation Not Recognized</h2>
+                <p class="text-ink-soft mt-3 leading-relaxed">
                     The link you followed is invalid or has expired. If you believe this is an error,
                     kindly reply to your invitation email or contact our office directly.
                 </p>
             </div>
 
-            <div id="page-already" class="hidden card-frame p-12 text-center">
-                <i class="ph-check-circle text-5xl text-[var(--clr-gold)]"></i>
-                <h2 class="font-serif text-3xl mt-4 text-[var(--clr-forest)]">Response Received</h2>
-                <p class="text-[var(--clr-text-muted)] mt-3 leading-relaxed font-medium">
-                    We have already recorded your reply, <span id="already-name" class="font-semibold text-[var(--clr-text-main)]"></span>.
+            <!-- ALREADY RESPONDED -->
+            <div id="page-already" class="hidden bg-white border hairline rounded-sm shadow-sm p-10 text-center">
+                <i class="ph-check-circle text-5xl text-gold"></i>
+                <h2 class="font-display text-3xl mt-4 text-ink">Your Response Has Been Received</h2>
+                <p class="text-ink-soft mt-3 leading-relaxed">
+                    We have already recorded your reply, <span id="already-name" class="font-semibold text-ink"></span>.
                     Should you need to amend your response, please reach out to us directly.
                 </p>
             </div>
 
-            <div id="page-form" class="hidden card-frame">
+            <!-- INVITATION + RSVP FORM -->
+            <div id="page-form" class="hidden bg-white border hairline rounded-sm shadow-sm overflow-hidden">
 
-                <div class="bg-[var(--clr-forest)] text-white p-12 text-center relative overflow-hidden">
-                    <div class="absolute inset-4 border border-[var(--clr-gold)] opacity-30 rounded-lg pointer-events-none"></div>
-                    
-                    <p class="text-[10px] tracking-[0.25em] font-semibold uppercase text-[var(--clr-gold)] mb-6">Silicon Valley Academy</p>
-                    <p class="font-serif text-xl italic text-[#d4d9d6]">requests the pleasure of the company of</p>
-                    
-                    <h1 id="invitee-name" class="font-serif text-4xl sm:text-5xl font-medium mt-4 text-[var(--clr-gold-light)]">&nbsp;</h1>
-                    
-                    <div class="divider mt-8"><i class="ph-diamond text-sm"></i></div>
-                    
-                    <p class="font-serif text-2xl mt-8 text-white">at the Donor Appreciation Dinner</p>
-                    <p class="text-sm mt-3 text-[#b4c2bc] max-w-md mx-auto leading-relaxed font-medium">
+                <!-- Invitation Plate -->
+                <div class="bg-ink text-white p-10 text-center relative">
+                    <div class="absolute inset-4 border border-gold-soft/30 pointer-events-none"></div>
+                    <p class="text-[11px] tracking-[0.35em] uppercase text-gold-soft">Silicon Valley Academy</p>
+                    <p class="font-display text-2xl mt-2 italic opacity-90">requests the pleasure of the company of</p>
+                    <h1 id="invitee-name" class="font-display text-4xl sm:text-5xl font-semibold mt-3">&nbsp;</h1>
+                    <div class="divider mt-6"><i class="ph-diamond text-sm"></i></div>
+                    <p class="font-display text-2xl mt-6">at the Donor Appreciation Dinner</p>
+                    <p class="text-sm mt-2 opacity-75 max-w-md mx-auto leading-relaxed">
                         An evening in gratitude to the benefactors whose generosity sustains our mission,
                         with the stewardship of the One Well Endowment.
                     </p>
 
-                    <div class="mt-10 grid sm:grid-cols-2 gap-6 text-sm max-w-md mx-auto">
-                        <div class="bg-black/10 rounded-lg p-4 border border-white/5">
-                            <p class="text-[9px] tracking-[0.2em] font-bold uppercase text-[var(--clr-gold)]">Date</p>
-                            <p class="mt-2 font-serif text-lg text-white" id="event-date">Tuesday, 28 April 2026</p>
+                    <div class="divider mt-8"><i class="ph-star-four text-xs"></i></div>
+
+                    <div class="mt-6 grid sm:grid-cols-2 gap-4 text-sm max-w-md mx-auto">
+                        <div>
+                            <p class="text-[10px] tracking-[0.3em] uppercase text-gold-soft">Date</p>
+                            <p class="mt-2 font-display text-xl" id="event-date">Tuesday, 28 April 2026</p>
                         </div>
-                        <div class="bg-black/10 rounded-lg p-4 border border-white/5">
-                            <p class="text-[9px] tracking-[0.2em] font-bold uppercase text-[var(--clr-gold)]">Reception</p>
-                            <p class="mt-2 font-serif text-lg text-white" id="event-time">6:00 in the evening</p>
+                        <div>
+                            <p class="text-[10px] tracking-[0.3em] uppercase text-gold-soft">Reception</p>
+                            <p class="mt-2 font-display text-xl" id="event-time">6:00 in the evening</p>
                         </div>
                     </div>
 
-                    <div class="mt-8">
-                        <p class="text-[9px] tracking-[0.2em] font-bold uppercase text-[var(--clr-gold)]">Venue</p>
-                        <p class="font-serif text-xl mt-2 text-white" id="event-venue">Venue to be announced</p>
-                        <p class="text-xs text-[#b4c2bc] mt-1 font-medium" id="event-address">Final details will follow in advance of the evening</p>
+                    <div class="mt-8 text-sm opacity-90">
+                        <p class="text-[10px] tracking-[0.3em] uppercase text-gold-soft">Venue</p>
+                        <p class="font-display text-xl mt-2" id="event-venue">Venue to be announced</p>
+                        <p class="text-xs opacity-75 mt-1" id="event-address">Final details will follow in advance of the evening</p>
                     </div>
                 </div>
 
-                <div class="p-8 sm:p-12 bg-white">
-                    <div class="text-center mb-10">
-                        <p class="section-label text-[var(--clr-gold)] mb-2">Kindly Respond</p>
-                        <h2 class="font-serif text-3xl text-[var(--clr-forest)]">The favour of a reply is requested</h2>
-                        <p class="text-sm text-[var(--clr-text-muted)] mt-2 font-medium" id="rsvp-deadline">on or before the twentieth of April</p>
+                <!-- RSVP Form -->
+                <div class="p-8 sm:p-10">
+                    <div class="text-center mb-8">
+                        <p class="text-[11px] tracking-[0.35em] uppercase text-gold">Kindly Respond</p>
+                        <h2 class="font-display text-3xl text-ink mt-2">The favour of a reply is requested</h2>
+                        <p class="text-sm text-ink-soft mt-2" id="rsvp-deadline">on or before the twentieth of April</p>
                     </div>
 
-                    <form id="rsvp-form" class="space-y-8">
-                        
+                    <form id="rsvp-form" class="space-y-6">
+
+                        <!-- Accept / Decline -->
                         <div>
-                            <label class="section-label block mb-3">Your Response</label>
-                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                                <label class="rsvp-choice rounded-xl p-5 text-center block flex flex-col items-center justify-center gap-2" data-value="accept">
+                            <label class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-3">Your Response</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label class="rsvp-choice border hairline rounded-sm p-4 text-center block" data-value="accept">
                                     <input type="radio" name="response" value="accept" class="sr-only" required>
-                                    <i class="ph-check-circle-fill choice-icon text-3xl text-[var(--clr-gold)]"></i>
-                                    <p class="font-serif text-xl font-medium text-[var(--clr-text-main)]">Accepts with pleasure</p>
+                                    <i class="ph-check-circle-fill choice-icon text-2xl text-gold"></i>
+                                    <p class="font-display text-lg mt-1">Accepts with pleasure</p>
                                 </label>
-                                <label class="rsvp-choice rounded-xl p-5 text-center block flex flex-col items-center justify-center gap-2" data-value="decline">
+                                <label class="rsvp-choice border hairline rounded-sm p-4 text-center block" data-value="decline">
                                     <input type="radio" name="response" value="decline" class="sr-only">
-                                    <i class="ph-x-circle choice-icon text-3xl text-stone-400"></i>
-                                    <p class="font-serif text-xl font-medium text-[var(--clr-text-main)]">Declines with regret</p>
+                                    <i class="ph-x-circle choice-icon text-2xl text-ink-soft"></i>
+                                    <p class="font-display text-lg mt-1">Declines with regret</p>
                                 </label>
                             </div>
                         </div>
 
-                        <div id="accept-fields" class="space-y-6 hidden bg-stone-50 p-6 rounded-xl border border-stone-100">
-                            <div class="grid sm:grid-cols-2 gap-6">
+                        <!-- Fields revealed when accepting -->
+                        <div id="accept-fields" class="space-y-5 hidden">
+                            <div class="grid sm:grid-cols-2 gap-5">
                                 <div>
-                                    <label for="guestName" class="section-label block mb-2">Name as to appear</label>
-                                    <input type="text" id="guestName" name="guestName" class="form-input">
+                                    <label for="guestName" class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-2">Name as to appear</label>
+                                    <input type="text" id="guestName" name="guestName" class="block w-full px-4 py-3 border hairline rounded-sm">
                                 </div>
                                 <div>
-                                    <label for="attendees" class="section-label block mb-2">Party of</label>
-                                    <select id="attendees" name="attendees" class="form-input bg-white cursor-pointer">
+                                    <label for="attendees" class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-2">Party of</label>
+                                    <select id="attendees" name="attendees" class="block w-full px-4 py-3 border hairline rounded-sm bg-white">
                                         <option value="1">One</option>
                                         <option value="2">Two</option>
                                         <option value="3">Three</option>
@@ -253,27 +232,26 @@
                             </div>
 
                             <div>
-                                <label for="companionNames" class="section-label block mb-2">Accompanying guest(s)</label>
-                                <input type="text" id="companionNames" name="companionNames" placeholder="Kindly list the names of your guests" class="form-input">
+                                <label for="companionNames" class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-2">Accompanying guest(s)</label>
+                                <input type="text" id="companionNames" name="companionNames" placeholder="Kindly list the names of your guests" class="block w-full px-4 py-3 border hairline rounded-sm">
                             </div>
 
                             <div>
-                                <label for="dietary" class="section-label block mb-2">Dietary preferences</label>
-                                <input type="text" id="dietary" name="dietary" placeholder="e.g. Halal, vegetarian, allergies" class="form-input">
+                                <label for="dietary" class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-2">Dietary preferences</label>
+                                <input type="text" id="dietary" name="dietary" placeholder="e.g. Halal, vegetarian, allergies" class="block w-full px-4 py-3 border hairline rounded-sm">
                             </div>
                         </div>
 
+                        <!-- Always visible -->
                         <div>
-                            <label for="comments" class="section-label block mb-2">A note to your host <span class="normal-case tracking-normal font-normal text-stone-400">(optional)</span></label>
-                            <textarea id="comments" name="comments" rows="3" placeholder="Any special requests, accessibility needs, or a personal message to the committee."
-                                class="form-input resize-none"></textarea>
+                            <label for="comments" class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-2">A note to your host (optional)</label>
+                            <textarea id="comments" name="comments" rows="4" placeholder="Any special requests, accessibility needs, or a personal message to the committee."
+                                class="block w-full px-4 py-3 border hairline rounded-sm"></textarea>
                         </div>
 
-                        <div class="pt-6 flex flex-col sm:flex-row items-center justify-between border-t border-[var(--clr-border)] gap-4">
-                            <p class="text-xs text-[var(--clr-text-muted)] font-medium flex items-center gap-1.5">
-                                <i class="ph-lock-key text-stone-400"></i> Your reply is private and confidential.
-                            </p>
-                            <button type="submit" class="btn-primary w-full sm:w-auto px-8 py-3 rounded-lg text-xs font-bold uppercase tracking-widest">
+                        <div class="pt-4 flex items-center justify-between border-t hairline">
+                            <p class="text-xs text-ink-soft italic">Your reply is private and confidential.</p>
+                            <button type="submit" class="btn-teal px-8 py-3 rounded-sm text-sm uppercase tracking-[0.2em] font-medium">
                                 Submit Reply
                             </button>
                         </div>
@@ -281,34 +259,41 @@
                 </div>
             </div>
 
-            <div id="page-confirmation" class="hidden card-frame p-12 text-center">
-                <div class="mx-auto flex items-center justify-center mb-6" style="width:80px;height:80px;border-radius:50%;background:var(--clr-forest);box-shadow:0 10px 30px rgba(20,54,40,0.2);">
-                    <i class="ph-check text-4xl text-[var(--clr-gold)]"></i>
+            <!-- CONFIRMATION -->
+            <div id="page-confirmation" class="hidden bg-white border hairline rounded-sm shadow-sm p-10 text-center">
+                <div class="mx-auto flex items-center justify-center" style="width:72px;height:72px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--ink));box-shadow:0 10px 30px rgba(13,148,136,0.25);">
+                    <i class="ph-check text-3xl text-white"></i>
                 </div>
-                <h2 class="font-serif text-4xl text-[var(--clr-forest)]">With our sincere thanks.</h2>
-                <p class="text-[var(--clr-text-muted)] mt-4 font-medium leading-relaxed max-w-md mx-auto" id="conf-message">
+                <h2 class="font-display text-4xl mt-6 text-ink">With our sincere thanks.</h2>
+                <p class="text-ink-soft mt-4 leading-relaxed max-w-md mx-auto" id="conf-message">
                     Your reply has been recorded. A confirmation has been sent to your inbox,
                     along with practical details for the evening.
                 </p>
                 <div class="divider mt-8"><i class="ph-diamond text-sm"></i></div>
-                <p class="font-serif italic text-xl mt-8 text-[var(--clr-sage)]">— Silicon Valley Academy</p>
+                <p class="font-display italic text-lg mt-6 text-ink">— Silicon Valley Academy</p>
             </div>
 
-            <div id="loading" class="hidden card-frame p-16 text-center">
-                <i class="ph-circle-notch text-4xl text-[var(--clr-gold)] animate-spin mx-auto"></i>
-                <p class="mt-4 text-[10px] font-bold tracking-[0.2em] uppercase text-[var(--clr-text-muted)]">Recording your reply...</p>
+            <!-- LOADING -->
+            <div id="loading" class="hidden text-center p-16">
+                <i class="ph-circle-notch text-4xl text-gold animate-spin"></i>
+                <p class="mt-4 text-xs tracking-[0.3em] uppercase text-ink-soft">Recording your reply</p>
             </div>
 
         </div>
     </main>
 
-    <footer class="mt-auto py-8 text-center text-[var(--clr-text-muted)] text-xs font-medium">
-        <p class="font-serif text-sm text-[var(--clr-forest)] mb-1">Silicon Valley Academy</p>
-        <p>Endowment stewarded by One Well Endowment Management.</p>
-        <p class="mt-3 opacity-60">&copy; 2026 Silicon Valley Academy. All rights reserved.</p>
+    <footer class="border-t hairline bg-paper-deep mt-auto">
+        <div class="max-w-3xl mx-auto py-6 px-6 text-center text-ink-soft text-xs tracking-wide">
+            <p class="font-display text-base text-ink">Silicon Valley Academy</p>
+            <p class="mt-1">Endowment stewarded by One Well Endowment Management.</p>
+            <p class="mt-3 opacity-70">&copy; 2026 Silicon Valley Academy. All rights reserved.</p>
+        </div>
     </footer>
 
     <script>
+        // ============================================================
+        // PASTE YOUR DEPLOYED GOOGLE APPS SCRIPT WEB APP URL HERE
+        // ============================================================
         const WEB_APP_URL = 'https://script.google.com/macros/s/REPLACE_ME/exec';
 
         const pages = ['page-form', 'page-confirmation', 'page-invalid', 'page-already', 'loading'];
@@ -317,9 +302,11 @@
             document.getElementById(id).classList.remove('hidden');
         }
 
+        // Parse token from URL
         const urlParams = new URLSearchParams(window.location.search);
         const token = urlParams.get('token');
 
+        // Load invitation details by token
         async function loadInvitation() {
             if (!token) { showPage('page-invalid'); return; }
             showPage('loading');
@@ -338,6 +325,7 @@
                 document.getElementById('invitee-name').textContent = data.name || 'Esteemed Guest';
                 document.getElementById('guestName').value = data.name || '';
 
+                // Event details pulled from sheet (optional — falls back to defaults in HTML)
                 if (data.event) {
                     if (data.event.date)     document.getElementById('event-date').textContent = data.event.date;
                     if (data.event.time)     document.getElementById('event-time').textContent = data.event.time;
@@ -353,6 +341,7 @@
             }
         }
 
+        // Accept/Decline toggle
         document.querySelectorAll('.rsvp-choice').forEach(choice => {
             choice.addEventListener('click', () => {
                 document.querySelectorAll('.rsvp-choice').forEach(c => {
@@ -361,21 +350,15 @@
                 const value = choice.dataset.value;
                 choice.classList.add(value === 'accept' ? 'selected-accept' : 'selected-decline');
                 choice.querySelector('input').checked = true;
-                
-                // Animate fields reveal
-                const fields = document.getElementById('accept-fields');
-                if (value === 'accept') {
-                    fields.classList.remove('hidden');
-                } else {
-                    fields.classList.add('hidden');
-                }
-                
+                document.getElementById('accept-fields').classList.toggle('hidden', value !== 'accept');
+                // Required toggle
                 ['guestName','attendees'].forEach(id => {
                     document.getElementById(id).required = (value === 'accept');
                 });
             });
         });
 
+        // Submit
         document.getElementById('rsvp-form').addEventListener('submit', async function(e) {
             e.preventDefault();
             const response = document.querySelector('input[name="response"]:checked');
@@ -400,12 +383,10 @@
                     body: JSON.stringify(payload),
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' }
                 });
+                // no-cors means we can't read the response; assume success
                 if (response.value === 'decline') {
-                    document.getElementById('conf-message').innerHTML =
-                        'Your regrets have been conveyed.<br>We are grateful for your continued partnership and hope to welcome you on another occasion.';
-                } else {
-                    document.getElementById('conf-message').innerHTML =
-                        'Your reply has been recorded. A confirmation has been sent to your inbox, along with practical details for the evening.';
+                    document.getElementById('conf-message').textContent =
+                        'Your regrets have been conveyed. We are grateful for your continued partnership and hope to welcome you on another occasion.';
                 }
                 showPage('page-confirmation');
             } catch (err) {
@@ -415,6 +396,7 @@
             }
         });
 
+        // Go
         loadInvitation();
     </script>
 </body>
