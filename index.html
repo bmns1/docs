@@ -214,7 +214,7 @@
                         </div>
 
                         <!-- Fields revealed when accepting -->
-                        <!--  <div id="accept-fields" class="space-y-5 hidden">
+                          <div id="accept-fields" class="space-y-5 hidden">
                             <div class="grid sm:grid-cols-2 gap-5">
                               <div>
                                     <label for="guestName" class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-2">Name as to appear</label>
@@ -238,7 +238,7 @@
                                 <input type="text" id="dietary" name="dietary" placeholder="e.g. Halal, vegetarian, allergies" class="block w-full px-4 py-3 border hairline rounded-sm">
                             </div> 
                                 
-                        </div> -->
+                        </div> 
 
                         <!-- Always visible -->
                         <div>
@@ -348,10 +348,10 @@
                 const value = choice.dataset.value;
                 choice.classList.add(value === 'accept' ? 'selected-accept' : 'selected-decline');
                 choice.querySelector('input').checked = true;
-                document.getElementById('accept-fields').classList.toggle('hidden', value !== 'accept');
+                document.getElementById('accept-fields').classList.toggle('hidden', value !== 'accept2');
                 // Required toggle
                 ['guestName','attendees'].forEach(id => {
-                    document.getElementById(id).required = (value === 'accept');
+                    document.getElementById(id).required = (value === 'accept2');
                 });
             });
         });
