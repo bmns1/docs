@@ -224,12 +224,13 @@
                                     <label for="attendees" class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-2">Party of</label>
                                     <select id="attendees" name="attendees" class="block w-full px-4 py-3 border hairline rounded-sm bg-white">
                                         <option value="1">One</option>
+                                        <option value="2">One</option>
                                     </select>
                                 </div>  
                             </div>
 
                             <div>
-                                <label for="companionNames" class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-2">Accompanying guest(s)</label>
+                                <label for="companionNames" class="block text-[11px] tracking-[0.25em] uppercase text-ink-soft mb-2">Accompanying guest</label>
                                 <input type="text" id="companionNames" name="companionNames" placeholder="Kindly list the names of your guests" class="block w-full px-4 py-3 border hairline rounded-sm">
                             </div>
 
@@ -348,10 +349,10 @@
                 const value = choice.dataset.value;
                 choice.classList.add(value === 'accept' ? 'selected-accept' : 'selected-decline');
                 choice.querySelector('input').checked = true;
-                document.getElementById('accept-fields').classList.toggle('hidden', value !== 'accept2');
+                document.getElementById('accept-fields').classList.toggle('hidden', value !== 'accept');
                 // Required toggle
                 ['guestName','attendees'].forEach(id => {
-                    document.getElementById(id).required = (value === 'accept2');
+                    document.getElementById(id).required = (value === 'accept');
                 });
             });
         });
